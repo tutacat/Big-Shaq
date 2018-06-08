@@ -8,6 +8,6 @@ Nice Nelly = Nelson Fang
 
 Kiran Rodrigues
 
-Gautum Mahesh
+Gautam Mahesh
 
 acchindra thev = Acchin Thev
