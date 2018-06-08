@@ -50,6 +50,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.font.TextAttribute;
@@ -97,22 +98,21 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class Player extends JComponent{
+public class Player extends JComponent implements ActionListener, KeyListener{
 	//fields for player
 	private int lives;
 	private String graphic;
 	private boolean isAlive;
-	private BufferedImage player;
-	public int xpos;
-	public int ypos;
+	public int xpos = 10;
+	public int ypos = 10;
 	 
 	
 	//game fields
 	Graphics g2d;
+	private int vely = 0;
+	private int velx = 0;
 	
-	//final fields
-	private final int VELOCITY_UP = 2;
-	private final int VELOCITY_SIDE = 5;
+	Timer t = new Timer(5, this);
 	
 	public Player(int lives, String graphic) {
 		//user generated
@@ -123,13 +123,11 @@ public class Player extends JComponent{
 		isAlive = true;
 		xpos = 0;
 		ypos = 0;
-		try {
-			player = ImageIO.read(getClass().getResourceAsStream("res/BigShaq.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			
+		
+		t.start();
+		addKeyListener(this);
+		setFocusable(true);
+		setFocusTraversalKeysEnabled(false);
 	}
 
 	public int getLives() {
@@ -153,15 +151,60 @@ public class Player extends JComponent{
 	}
 	
 	public void paint(Graphics g) {
-		g2d = (Graphics2D) g;
-		ImageIcon icon= new ImageIcon(player);
-		g2d.drawImage(icon.getImage(), 0, 0, null);
+	    Graphics2D g2 = (Graphics2D) g;
+
+	    Image img1 = Toolkit.getDefaultToolkit().getImage("res/BigShaq Still (4).png");
+	    g2.drawImage(img1, xpos, ypos, this);
+	    g2.finalize();
 	}
 	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		paint(g);
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		int c = e.getKeyCode();
+		if(c == KeyEvent.VK_UP) {
+			vely = -2;
+			velx = 0;
+		}
+		if(c == KeyEvent.VK_DOWN) {
+			vely = 2;
+			velx = 0;
+		}
+		if(c == KeyEvent.VK_LEFT) {
+			vely = 0;
+			velx = -5;
+		}
+		if(c == KeyEvent.VK_RIGHT) {
+			vely = 0;
+			velx = 5;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		velx = 0;
+		vely = 0;
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		xpos += velx;
+		ypos += vely;
+		repaint();
 	}
 	
 }
