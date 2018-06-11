@@ -105,14 +105,13 @@ public class Player extends JComponent implements ActionListener, KeyListener{
 	private boolean isAlive;
 	public int xpos = 10;
 	public int ypos = 10;
-	 
-	
-	//game fields
-	Graphics g2d;
 	private int vely = 0;
 	private int velx = 0;
+	public int key;
+	
 	
 	Timer t = new Timer(5, this);
+	
 	
 	public Player(int lives, String graphic) {
 		//user generated
@@ -184,6 +183,9 @@ public class Player extends JComponent implements ActionListener, KeyListener{
 			vely = 0;
 			velx = 5;
 		}
+		if(c == KeyEvent.VK_SPACE) {
+			key = c;
+		}
 	}
 
 	@Override
@@ -201,9 +203,25 @@ public class Player extends JComponent implements ActionListener, KeyListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		if(xpos < 0) {
+			velx = 0;
+			xpos = 0;
+		}
+		if(xpos > 1000) {
+			velx = 0;
+			xpos = 1000;
+		}
+		if(ypos < 0) {
+			vely = 0;
+			ypos = 0;
+		}
+		if(ypos > 1000) {
+			vely = 0;
+			ypos = 1000;
+		}
 		xpos += velx;
 		ypos += vely;
+		//System.out.println("(" + xpos + ", " + ypos + ")");
 		repaint();
 	}
 	
