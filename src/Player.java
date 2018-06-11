@@ -170,6 +170,7 @@ public class Player extends JComponent implements ActionListener, KeyListener{
 		if(c == KeyEvent.VK_UP) {
 			vely = -2;
 			velx = 0;
+			setGraphic()
 		}
 		if(c == KeyEvent.VK_DOWN) {
 			vely = 2;
