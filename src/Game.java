@@ -19,6 +19,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 	Player player;
 	boolean bulletVisible;
 	LinkedList<Bullet> bullets = new LinkedList();
+	LinkedList<Enemy> enemies = new LinkedList();
 	
 	public Game() {
 		player = new Player(9, 880, 885);
@@ -41,11 +42,20 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 	    player.paintPlayer(g);
 	}
 	
+	public void paintEnemy(Graphics g) {
+		for(int i = 0; i < enemies.size(); i++) {
+			Enemy e = enemies.get(i);
+			e.paint(g);
+			System.out.println(e.getXpos());
+		}
+	}
+	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		paintPlayer(g);
 		paintBullets(g);
+		paintEnemy(g);
 	}
 	
 	@Override
@@ -54,6 +64,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 		int c = e.getKeyCode();
 		if(c == KeyEvent.VK_UP) {
 			player.vely = -10;
+			enemies.add(new Enemy(15, (int)(Math.random()*((1760 - 10) + 1) + 10), (int)(Math.random()*((10 - 1) + 1) + 1)));
 		}
 		if(c == KeyEvent.VK_DOWN) {
 			player.vely = 10;
@@ -123,7 +134,6 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 			repaint();
 		}
 		repaint();
-		System.out.println(player.xpos + " " + player.ypos);
 	}
 	
 }
