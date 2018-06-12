@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.JPanel;
@@ -17,14 +18,15 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 	Timer t = new Timer(5, this);
 	Bullet b;
 	Player player;
+	Enemy e;
 	boolean bulletVisible;
 	LinkedList<Bullet> bullets = new LinkedList();
-	LinkedList<Enemy> enemies = new LinkedList();
+	ArrayList<Enemy> enemies = new ArrayList();
 	
 	public Game() {
 		player = new Player(9, 880, 885);
 		t.start();
-		setBackground(Color.CYAN);
+		setBackground(Color.DARK_GRAY);
 		addKeyListener(this);
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
@@ -131,6 +133,17 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 				bullets.remove(b);
 			}
 			b.ypos += b.yvel;
+			repaint();
+		}
+		for(int i = 0; i < enemies.size(); i++) {
+			e = enemies.get(i);
+			if(e.ypos < 10) {
+				e.ypos = 10;
+			}
+			if(e.ypos > 885) {
+				e.ypos = 885;
+			}
+			e.ypos += e.yvel;
 			repaint();
 		}
 		repaint();

@@ -74,7 +74,7 @@ public class Enemy extends JComponent{
 	    Graphics2D g2 = (Graphics2D) g;
 
 	    Image img1 = Toolkit.getDefaultToolkit().getImage("res/darklord.png");
-	    g2.drawImage(img1, (int)xpos, (int)ypos, this);
+	    g2.drawImage(img1, xpos, ypos, 64, 64, this);
 	    g2.finalize();
 	}
 }
