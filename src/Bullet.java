@@ -14,7 +14,7 @@ import javax.swing.Timer;
 public class Bullet extends JComponent {
 	public double xpos;
 	public double ypos;
-	public double yvel = -5;
+	public double yvel = -10;
 	
 	public Bullet(double d, double ypos2) {
 		this.xpos  = d;

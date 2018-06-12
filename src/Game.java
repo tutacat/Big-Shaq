@@ -21,7 +21,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 	LinkedList<Bullet> bullets = new LinkedList();
 	
 	public Game() {
-		player = new Player(9, 880, 910);
+		player = new Player(9, 880, 885);
 		t.start();
 		setBackground(Color.CYAN);
 		addKeyListener(this);
@@ -53,16 +53,16 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 		// TODO Auto-generated method stub
 		int c = e.getKeyCode();
 		if(c == KeyEvent.VK_UP) {
-			player.vely = -5;
+			player.vely = -10;
 		}
 		if(c == KeyEvent.VK_DOWN) {
-			player.vely = 5;
+			player.vely = 10;
 		}
 		if(c == KeyEvent.VK_LEFT) {
-			player.velx = -5;
+			player.velx = -10;
 		}
 		if(c == KeyEvent.VK_RIGHT) {
-			player.velx = 5;
+			player.velx = 10;
 		}
 		if(c == KeyEvent.VK_SPACE) {
 			bullets.add(new Bullet(player.xpos + 40, player.ypos));
@@ -108,9 +108,9 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 			player.vely = 0;
 			player.ypos = 10;
 		}
-		if(player.ypos > 910) {
+		if(player.ypos > 885) {
 			player.vely = 0;
-			player.ypos = 910;
+			player.ypos = 885;
 		}
 		player.xpos += player.velx;
 		player.ypos += player.vely;
@@ -123,6 +123,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 			repaint();
 		}
 		repaint();
+		System.out.println(player.xpos + " " + player.ypos);
 	}
 	
 }
