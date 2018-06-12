@@ -98,35 +98,27 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class Player extends JComponent implements ActionListener, KeyListener{
+public class Player extends JComponent {
 	//fields for player
 	private int lives;
-	private String graphic;
 	private boolean isAlive;
-	public int xpos = 10;
-	public int ypos = 10;
-	private int vely = 0;
-	private int velx = 0;
-	public int key;
-	
-	
-	Timer t = new Timer(5, this);
-	
-	
-	public Player(int lives, String graphic) {
+	public double xpos = 500;
+	public double ypos = 1000;
+	public double vely = 0;
+	public double velx = 0;
+
+	public Player(int lives, int xpos, int ypos) {
 		//user generated
 		this.lives = lives;
-		this.graphic = graphic;
-
+		this.xpos = xpos;
+		this.ypos = ypos;
 		//auto generated
 		isAlive = true;
 		xpos = 0;
 		ypos = 0;
-		
-		t.start();
-		addKeyListener(this);
+		/*addKeyListener(this);
 		setFocusable(true);
-		setFocusTraversalKeysEnabled(false);
+		setFocusTraversalKeysEnabled(false);*/
 	}
 
 	public int getLives() {
@@ -136,20 +128,20 @@ public class Player extends JComponent implements ActionListener, KeyListener{
 	public void setLives(int lives) {
 		this.lives = lives;
 	}
-
-	public String getGraphic() {
-		return graphic;
-	}
-
-	public void setGraphic(String graphic) {
-		this.graphic = graphic;
-	}
 	
 	public boolean isAlive() {
 		return isAlive;
 	}
 	
-	public void paint(Graphics g) {
+	public void paintPlayer(Graphics g) {
+	    Graphics2D g2 = (Graphics2D) g;
+
+	    Image img1 = Toolkit.getDefaultToolkit().getImage("res/BigShaq Still (4).png");
+	    g2.drawImage(img1, (int)xpos, (int)ypos, this);
+	    g2.finalize();
+	}
+	
+	/*public void paint(Graphics g) {
 	    Graphics2D g2 = (Graphics2D) g;
 
 	    Image img1 = Toolkit.getDefaultToolkit().getImage("res/BigShaq Still (4).png");
@@ -170,7 +162,6 @@ public class Player extends JComponent implements ActionListener, KeyListener{
 		if(c == KeyEvent.VK_UP) {
 			vely = -2;
 			velx = 0;
-			setGraphic()
 		}
 		if(c == KeyEvent.VK_DOWN) {
 			vely = 2;
@@ -224,6 +215,6 @@ public class Player extends JComponent implements ActionListener, KeyListener{
 		ypos += vely;
 		//System.out.println("(" + xpos + ", " + ypos + ")");
 		repaint();
-	}
+	}*/
 	
 }

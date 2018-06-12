@@ -11,34 +11,31 @@ import java.awt.event.KeyListener;
 import javax.swing.JComponent;
 import javax.swing.Timer;
 
-public class Bullet extends JComponent implements ActionListener, KeyListener {
-	public int xpos;
-	public int ypos;
-	public int yvel = -2;
+public class Bullet extends JComponent {
+	public double xpos;
+	public double ypos;
+	public double yvel = -5;
 	
-	Timer t = new Timer(5, this);
-	
-	public Bullet(int x, int y) {
-		this.xpos  = x;
-		this.ypos = y;
-		t.start();
+	public Bullet(double d, double ypos2) {
+		this.xpos  = d;
+		this.ypos = ypos2;
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
 	}
 	
-	public void paint(Graphics g) {
+	public void paintBullet(Graphics g) {
+	    Graphics2D g2 = (Graphics2D) g;
+	    Image img1 = Toolkit.getDefaultToolkit().getImage("res/flame_shot.png");
+	    g2.drawImage(img1, (int)xpos, (int)ypos, this);
+	}
+	
+/*	public void paint(Graphics g) {
 	    Graphics2D g2 = (Graphics2D) g;
 
 	    g2.drawRect(xpos, ypos, 1000, 1000);
 	}
 	
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		paint(g);
-	}
-
-	@Override
+	/*@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		ypos += yvel;
@@ -64,5 +61,5 @@ public class Bullet extends JComponent implements ActionListener, KeyListener {
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
-	}
+	}*/
 }

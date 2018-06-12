@@ -1,19 +1,34 @@
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
-class Main extends JComponent {
-
-  public void paint(Graphics g) {
-    Graphics2D g2 = (Graphics2D) g;
-
-    Image img1 = Toolkit.getDefaultToolkit().getImage("res/BigShaq.png");
-    g2.drawImage(img1, 10, 10, this);
-    g2.finalize();
-  }
+public class Main extends JFrame {
+	GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	Rectangle maxbounds = env.getMaximumWindowBounds();
+	public Main() {
+		setTitle("Big Shaq's Adventure");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getContentPane().add(new Game());
+		setBounds(maxbounds);
+		setVisible(true);
+		System.out.println(getHeight() + " " + getWidth());
+	}
+	public static void main(String[] a) {
+		new Main();
+	}
+	
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(1000, 1000);
+	}
 }
+
 
