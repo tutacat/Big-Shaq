@@ -8,13 +8,33 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import java.io.File;
+import java.io.IOException;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
 
 public class Game extends JPanel implements ActionListener, KeyListener {
+	private final int BUFFER_SIZE = 128000;
+    private File soundFile;
+    private AudioInputStream audioStream;
+    private AudioFormat audioFormat;
+    private SourceDataLine sourceLine;
 	Timer t = new Timer(5, this);
 	Bullet b;
 	Player player;
@@ -78,7 +98,23 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 			player.velx = 10;
 		}
 		if(c == KeyEvent.VK_SPACE) {
-			bullets.add(new Bullet(player.xpos + 40, player.ypos));
+			// Create two threads:
+			Thread thread1 = new Thread() {
+			    public void run() {
+			    	bullets.add(new Bullet(player.xpos + 40, player.ypos));
+			    }
+			};
+
+			Thread thread2 = new Thread() {
+			    public void run() {
+			    	playSound("bullet.wav");
+			    }
+			};
+
+			// Start the downloads.
+			thread1.start();
+			thread2.start();
+
 		}
 	}
 
@@ -149,4 +185,60 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 		repaint();
 	}
 	
+	public void playSound(String filename){
+			 String strFilename = filename;
+
+		        try {
+		            soundFile = new File(strFilename);
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		            System.exit(1);
+		        }
+
+		        try {
+		            audioStream = AudioSystem.getAudioInputStream(soundFile);
+		        } catch (Exception e){
+		            e.printStackTrace();
+		            System.exit(1);
+		        }
+
+		        audioFormat = audioStream.getFormat();
+
+		        DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
+		        try {
+		            sourceLine = (SourceDataLine) AudioSystem.getLine(info);
+		            sourceLine.open(audioFormat);
+		        } catch (LineUnavailableException e) {
+		            e.printStackTrace();
+		            System.exit(1);
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		            System.exit(1);
+		        }
+
+		        sourceLine.start();
+
+		        int nBytesRead = 0;
+		        byte[] abData = new byte[BUFFER_SIZE];
+		        while (nBytesRead != -1) {
+		            try {
+		                nBytesRead = audioStream.read(abData, 0, abData.length);
+		            } catch (IOException e) {
+		                e.printStackTrace();
+		            }
+		            if (nBytesRead >= 0) {
+		                @SuppressWarnings("unused")
+		                int nBytesWritten = sourceLine.write(abData, 0, nBytesRead);
+		            }
+		        }
+
+		        sourceLine.drain();
+		        sourceLine.close();
+		        
+		        if(filename.equals("bullet.wav")) {
+		        	return;
+		        } else {
+		        	playSound("Final Boss.wav");
+		        }
+		}
 }
