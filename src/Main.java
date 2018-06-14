@@ -24,7 +24,7 @@ public class Main extends JFrame {
 	}
 	public static void main(String[] a) {
 		new Main();
-		sound.playSound("Final Boss.wav");
+		sound.playSound("res/Final Boss.wav");
 	}
 	
 	@Override

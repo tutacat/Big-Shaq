@@ -123,7 +123,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
 			Thread thread2 = new Thread() {
 			    public void run() {
-			    	playSound("bullet.wav");
+			    	playSound("res/bullet.wav");
 			    }
 			};
 
@@ -290,10 +290,10 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 		        sourceLine.drain();
 		        sourceLine.close();
 		        
-		        if(filename.equals("bullet.wav")) {
+		        if(filename.equals("res/bullet.wav")) {
 		        	return;
 		        } else {
-		        	playSound("Final Boss.wav");
+		        	playSound("res/Final Boss.wav");
 		        }
 		}
 }
