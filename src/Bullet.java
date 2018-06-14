@@ -26,7 +26,7 @@ public class Bullet extends JComponent {
 	public void paintBullet(Graphics g) {
 	    Graphics2D g2 = (Graphics2D) g;
 	    Image img1 = Toolkit.getDefaultToolkit().getImage("res/flame_shot.png");
-	    g2.drawImage(img1, (int)xpos, (int)ypos, this);
+	    g2.drawImage(img1, (int)xpos, (int)ypos, this);   
 	}
 	
 /*	public void paint(Graphics g) {

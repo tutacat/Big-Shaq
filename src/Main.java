@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 public class Main extends JFrame {
 	GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	Rectangle maxbounds = env.getMaximumWindowBounds();
+	static Game sound = new Game();
 	public Main() {
 		setTitle("Big Shaq's Adventure");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -23,6 +24,7 @@ public class Main extends JFrame {
 	}
 	public static void main(String[] a) {
 		new Main();
+		sound.playSound("Final Boss.wav");
 	}
 	
 	@Override
