@@ -80,6 +80,21 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 		paintBullets(g);
 		paintEnemy(g);
 	}
+	public void spawnEnemy() {
+		Thread enemySpawner = new Thread(new Runnable() {
+			public void run() {
+				while(player.isAlive()) { // Just changed it to a while loop
+					enemies.add(new Enemy(15, (int)(Math.random()*((1760 - 10) + 1) + 10), (int)(Math.random()*((10 - 1) + 1) + 1)));
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		enemySpawner.start();
+	}
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
