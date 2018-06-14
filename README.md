@@ -6,7 +6,7 @@ nchhaj189 & s-chhajedn = Nipun Chhajed - Programmer
 
 Nice Nelly = Nelson Fang - Artist
 
-Kiran Rodrigues - Sound Design
+Kiran Rodrigues - Gameplay Strategy
 
 Gautam Mahesh - Artist 
 
