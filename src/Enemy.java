@@ -70,11 +70,11 @@ public class Enemy extends JComponent{
 		this.isDead = isDead;
 	}
 	
-	public void paintPlayer(Graphics g) {
+	public void paintEnemy(Graphics g) {
 	    Graphics2D g2 = (Graphics2D) g;
 
 	    Image img1 = Toolkit.getDefaultToolkit().getImage("res/darklord.png");
-	    g2.drawImage(img1, xpos, ypos, 64, 64, this);
+	    g2.drawImage(img1, xpos, ypos, this);
 	    g2.finalize();
 	}
 }

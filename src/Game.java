@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Random;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -25,14 +26,15 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 	
 	public Game() {
 		player = new Player(9, 880, 885);
+		e = new Enemy(15, (int)(Math.random()*((1760 - 10) + 1) + 10), (int)(Math.random()*((10 - 1) + 1) + 1));
+		enemies.add(e);
 		t.start();
 		setBackground(Color.DARK_GRAY);
 		addKeyListener(this);
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
 	}
-	
-	
+
 	public void paintBullets(Graphics g) {
 		for(int i = 0; i < bullets.size(); i++) {
 			b = bullets.get(i);
@@ -46,9 +48,8 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 	
 	public void paintEnemy(Graphics g) {
 		for(int i = 0; i < enemies.size(); i++) {
-			Enemy e = enemies.get(i);
-			e.paint(g);
-			System.out.println(e.getXpos());
+			e = enemies.get(i);
+			e.paintEnemy(g);
 		}
 	}
 	
@@ -65,17 +66,17 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 		// TODO Auto-generated method stub
 		int c = e.getKeyCode();
 		if(c == KeyEvent.VK_UP) {
-			player.vely = -10;
-			enemies.add(new Enemy(15, (int)(Math.random()*((1760 - 10) + 1) + 10), (int)(Math.random()*((10 - 1) + 1) + 1)));
+			player.vely = -7;
+			//enemies.add(new Enemy(15, (int)(Math.random()*((1760 - 10) + 1) + 10), (int)(Math.random()*((10 - 1) + 1) + 1)));
 		}
 		if(c == KeyEvent.VK_DOWN) {
-			player.vely = 10;
+			player.vely = 7;
 		}
 		if(c == KeyEvent.VK_LEFT) {
-			player.velx = -10;
+			player.velx = -7;
 		}
 		if(c == KeyEvent.VK_RIGHT) {
-			player.velx = 10;
+			player.velx = 7;
 		}
 		if(c == KeyEvent.VK_SPACE) {
 			bullets.add(new Bullet(player.xpos + 40, player.ypos));
@@ -109,6 +110,31 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
+		Random r = new Random();
+		r.ints(0, 4);
+		if(r.nextInt() % 2 == 0) {
+			e.yvel = 5;
+		} else {
+			e.xvel = -5;
+			e.yvel = 5;
+		}
+		if(e.xpos < 10) {
+			e.xvel = 0;
+			e.xpos = 10;
+		}
+		if(e.xpos > 1760) {
+			e.xvel = 0;
+			e.xpos = 1760;
+		}
+		if(e.ypos < 10) {
+			e.yvel = 0;
+			e.ypos = 10;
+		}
+		if(e.ypos > 885) {
+			e.yvel = 0;
+			e.ypos = 885;
+		}
+		
 		if(player.xpos < 10) {
 			player.velx = 0;
 			player.xpos = 10;
@@ -127,6 +153,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 		}
 		player.xpos += player.velx;
 		player.ypos += player.vely;
+		
 		for(int i = 0; i < bullets.size(); i++) {
 			b = bullets.get(i);
 			if(b.ypos < 0) {
@@ -135,17 +162,30 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 			b.ypos += b.yvel;
 			repaint();
 		}
+		/*
 		for(int i = 0; i < enemies.size(); i++) {
 			e = enemies.get(i);
+			if(e.getHealth() == 0) {
+				e.isDead = true;
+				enemies.remove(i);
+			}
+			if(e.isDead) {
+				Enemy temp = new Enemy(15, (int)(Math.random()*((1760 - 10) + 1) + 10), (int)(Math.random()*((10 - 1) + 1) + 1));
+				enemies.add(temp);
+			} else {
+				Enemy temp = new Enemy(15, (int)(Math.random()*((1760 - 10) + 1) + 10), (int)(Math.random()*((10 - 1) + 1) + 1));
+				enemies.add(temp);
+				t.setDelay(10000);
+			}
 			if(e.ypos < 10) {
 				e.ypos = 10;
 			}
 			if(e.ypos > 885) {
 				e.ypos = 885;
 			}
-			e.ypos += e.yvel;
 			repaint();
-		}
+		}*/
+		e.ypos += e.yvel;
 		repaint();
 	}
 	
