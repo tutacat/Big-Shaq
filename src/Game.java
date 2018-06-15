@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -40,15 +41,17 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 	Bullet b;
 	Player player;
 	Enemy e;
+	int score = 0;
 	boolean bulletVisible;
 	LinkedList<Bullet> bullets = new LinkedList();
 	ArrayList<Enemy> enemies = new ArrayList();
 	
 	public Game() {
 		player = new Player(9, 880, 885);
-		e = new Enemy(15, (int)(Math.random()*((1760 - 10) + 1) + 10), (int)(Math.random()*((10 - 1) + 1) + 1));
+		e = new Enemy(15, (int)(Math.random()*((1740 - 10) + 1) + 10), (int)(Math.random()*((10 - 1) + 1) + 1));
 		enemies.add(e);
 		t.start();
+		spawnEnemy();
 		setBackground(Color.DARK_GRAY);
 		addKeyListener(this);
 		setFocusable(true);
@@ -73,9 +76,17 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 		}
 	}
 	
+	public void paintScore(Graphics g) {
+		setOpaque(true);
+		Graphics2D g2 = (Graphics2D) g;
+		g2.drawString("Score: " + score, 15, 15);
+		g2.setColor(Color.WHITE);
+	}
+	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		paintScore(g);
 		paintPlayer(g);
 		paintBullets(g);
 		paintEnemy(g);
@@ -84,9 +95,9 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 		Thread enemySpawner = new Thread(new Runnable() {
 			public void run() {
 				while(player.isAlive()) { // Just changed it to a while loop
-					enemies.add(new Enemy(15, (int)(Math.random()*((1760 - 10) + 1) + 10), (int)(Math.random()*((10 - 1) + 1) + 1)));
+					enemies.add(new Enemy(15, (int)(Math.random()*((1720 - 10) + 1) + 10), (int)(Math.random()*((10 - 1) + 1) + 1)));
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(5000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -160,32 +171,6 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		Random r = new Random();
-		r.ints(0, 4);
-		if(r.nextInt() % 2 == 0) {
-			e.yvel = 5;
-		} else {
-			e.xvel = -5;
-			e.yvel = 5;
-		}
-		if(e.xpos < 10) {
-			e.xvel = 0;
-			e.xpos = 10;
-		}
-		if(e.xpos > 1760) {
-			e.xvel = 0;
-			e.xpos = 1760;
-		}
-		if(e.ypos < 10) {
-			e.yvel = 0;
-			e.ypos = 10;
-		}
-		if(e.ypos > 885) {
-			e.yvel = 0;
-			e.ypos = 885;
-		}
-		
 		if(player.xpos < 10) {
 			player.velx = 0;
 			player.xpos = 10;
@@ -204,39 +189,54 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 		}
 		player.xpos += player.velx;
 		player.ypos += player.vely;
-		
+
 		for(int i = 0; i < bullets.size(); i++) {
 			b = bullets.get(i);
+			if(i <= enemies.size() - 1) {
+				e = enemies.get(i);
+				if(e.bulletHit(b)) {
+					if(e.isDead) {
+						enemies.remove(e);
+						bullets.remove(b);
+						score++;
+					}
+					bullets.remove(b);
+				}
+			}
 			if(b.ypos < 0) {
 				bullets.remove(b);
 			}
 			b.ypos += b.yvel;
 			repaint();
 		}
-		/*
+		
 		for(int i = 0; i < enemies.size(); i++) {
 			e = enemies.get(i);
-			if(e.getHealth() == 0) {
-				e.isDead = true;
-				enemies.remove(i);
+			if(e.playerCollide(player)) {
+				player.setLives(player.getLives() - 1);
+				if(player.getLives() == 0) {
+					player.isAlive = false;
+				}
 			}
-			if(e.isDead) {
-				Enemy temp = new Enemy(15, (int)(Math.random()*((1760 - 10) + 1) + 10), (int)(Math.random()*((10 - 1) + 1) + 1));
-				enemies.add(temp);
-			} else {
-				Enemy temp = new Enemy(15, (int)(Math.random()*((1760 - 10) + 1) + 10), (int)(Math.random()*((10 - 1) + 1) + 1));
-				enemies.add(temp);
-				t.setDelay(10000);
+			if(e.xpos < 10) {
+				e.xvel = 0;
+				e.xpos = 10;
+			}
+			if(e.xpos > 1720) {
+				e.xvel = 0;
+				e.xpos = 1720;
 			}
 			if(e.ypos < 10) {
+				e.yvel = 0;
 				e.ypos = 10;
 			}
-			if(e.ypos > 885) {
-				e.ypos = 885;
+			if(e.ypos > 800) {
+				e.yvel = 0;
+				e.ypos = 800;
 			}
 			repaint();
-		}*/
-		e.ypos += e.yvel;
+		}
+		//e.ypos += e.yvel;
 		repaint();
 	}
 	

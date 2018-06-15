@@ -101,7 +101,7 @@ import javax.swing.Timer;
 public class Player extends JComponent {
 	//fields for player
 	private int lives;
-	private boolean isAlive;
+	public boolean isAlive;
 	public double xpos = 500;
 	public double ypos = 1000;
 	public double vely = 0;
@@ -131,6 +131,10 @@ public class Player extends JComponent {
 	
 	public boolean isAlive() {
 		return isAlive;
+	}
+	
+	public Rectangle bounds() {
+		return new Rectangle((int)xpos, (int)ypos, 96, 96);
 	}
 	
 	public void paintPlayer(Graphics g) {

@@ -1,6 +1,7 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 
 import javax.swing.JComponent;
@@ -21,7 +22,29 @@ public class Enemy extends JComponent{
 		this.yvel = 0;
 		this.isDead = false;
 	}
-
+	
+	public Rectangle bounds() {
+		return new Rectangle(xpos, ypos, 400, 400);
+	}
+	
+	public boolean bulletHit(Bullet b) {
+		if(bounds().intersects(b.bounds())) {
+			health -= 1;
+			if(health == 0) {
+				isDead = true;
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean playerCollide(Player p) {
+		if(bounds().intersects(p.bounds())) {
+			p.ypos += 20;
+			return true;
+		}
+		return false;
+	}
 	public int getHealth() {
 		return health;
 	}

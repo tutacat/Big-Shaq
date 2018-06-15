@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +22,10 @@ public class Bullet extends JComponent {
 		this.ypos = ypos2;
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
+	}
+	
+	public Rectangle bounds() {
+		return new Rectangle((int)xpos, (int)ypos, 100, 100);
 	}
 	
 	public void paintBullet(Graphics g) {
